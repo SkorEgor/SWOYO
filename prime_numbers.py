@@ -38,10 +38,12 @@ def prime_numbers_internet(low, high):
         return []
     # В. Приведение нижней границы к ближайшему простому числу,
     # если она за диапазоном (для ускорения)
-    if low <= 2:
+    if low < 2:
         low = 2
 
-    n = high
+    n = high + 1
+    if high == 2:
+        return [2]
     """ Input n>=6, Returns a list of primes, 2 <= p < n """
     n, correction = n - n % 6 + 6, 2 - (n % 6 > 1)
     prime = [True] * (n // 3)
@@ -51,7 +53,15 @@ def prime_numbers_internet(low, high):
             prime[k * k // 3::2 * k] = [False] * ((n // 6 - k * k // 6 - 1) // k + 1)
             prime[k * (k - 2 * (i & 1) + 4) // 3::2 * k] = [False] * (
                     (n // 6 - k * (k - 2 * (i & 1) + 4) // 6 - 1) // k + 1)
-    return [2, 3] + [3 * i + 1 | 1 for i in range(low, n // 3 - correction) if prime[i]]
+    prime = [2, 3] + [3 * i + 1 | 1 for i in range(1, n // 3 - correction) if prime[i]]
+
+    index_start = 0
+    for i in range(len(prime)):
+        if prime[i] > low:
+            index_start = i - 1
+            break
+
+    return prime[index_start:]
 
 
 from math import sqrt
@@ -75,8 +85,8 @@ def prime_numbers_numpy(low, high):
         return []
     # В. Приведение нижней границы к ближайшему простому числу,
     # если она за диапазоном (для ускорения)
-    if low <= 2:
-        low = 2
+    if low < 0:
+        low = 0
 
     # (II) Логический массив всех чисел от 0 до high
     # True - индекс элемента это простое число; False - не простое
@@ -95,8 +105,7 @@ def prime_numbers_numpy(low, high):
             # начинаем с p^2, потому что все меньшие числа, кратные p, уже зачеркнуты
             # и само число p нужно оставить
             prime[p * p::p] = False
-
-    return np.arange(high + 1, dtype=int)[prime].tolist()
+    return (np.arange(low, high + 1, dtype=int)[prime[low:]]).tolist()
 
 
 # Функция получения простых чисел в диапазоне

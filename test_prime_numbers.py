@@ -9,28 +9,28 @@ not_integer_parameters = [(5, 8.9), (5.4, 8), (5.7, 8.9), ([4], 89)]
 
 @pytest.mark.parametrize("low, high", not_integer_parameters)
 def test_not_integer_parameters(low, high):
-    assert prime_numbers_numpy(low, high) == []
+    assert prime_numbers_internet(low, high) == []
 
 
 # 2. Вызов с low>high
 def test_lower_limit_is_larger():
-    assert prime_numbers_numpy(80, 5) == []
+    assert prime_numbers_internet(80, 5) == []
 
 
 # 3. low и high не в диапазоне простых чисел. Low и high < 2
 def test_range_does_not_contain_numbers():
-    assert prime_numbers_numpy(-5, 0) == []
+    assert prime_numbers_internet(-5, 0) == []
 
 
 # (II) РЕЗУЛЬТАТ ОБРАБОТКИ
 # 1. Результат имеет тип данных list
 def test_result_is_list():
-    assert isinstance(prime_numbers_numpy(2, 8), list)
+    assert isinstance(prime_numbers_internet(2, 8), list)
 
 
 # 1. low не в диапазоне, high в диапазоне
 def test_lower_limit_not_in_range():
-    assert prime_numbers_numpy(-50, 5) == [2, 3, 5]
+    assert prime_numbers_internet(-50, 5) == [2, 3, 5]
 
 
 # 2. Проверка правильности определения от 2-5000
@@ -80,15 +80,15 @@ prime_numbers_2_to_5000 = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 4
 
 
 def test_prime_numbers_2_to_5000():
-    assert prime_numbers_numpy(2, 5000) == prime_numbers_2_to_5000
+    assert prime_numbers_internet(2, 5000) == prime_numbers_2_to_5000
 
 
 # 4. Проверка вывод одного элемента / границы равны
 def test_simple_output_1element():
-    assert prime_numbers_numpy(2, 2) == [2]
+    assert prime_numbers_internet(2, 2) == [2]
 
 
 # 5. Проверка на диапазон
 def test_range():
     # a[8], a[50] -> (23, 233)
-    assert prime_numbers_clean(23, 233) == prime_numbers_2_to_5000[8:51]
+    assert prime_numbers_internet(23, 233) == prime_numbers_2_to_5000[8:51]
