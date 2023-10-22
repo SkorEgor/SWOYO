@@ -1,7 +1,6 @@
 from prime_numbers import *
 import pytest
 
-
 # (I) ТЕСТ НА НЕ КОРРЕКТНЫЙ ВВОД
 # 1. Вызов с 2-мя аргументами типа данных не int
 not_integer_parameters = [(5, 8.9), (5.4, 8), (5.7, 8.9), ([4], 89)]
@@ -9,31 +8,47 @@ not_integer_parameters = [(5, 8.9), (5.4, 8), (5.7, 8.9), ([4], 89)]
 
 @pytest.mark.parametrize("low, high", not_integer_parameters)
 def test_not_integer_parameters(low, high):
-    assert prime_numbers_internet(low, high) == []
+    assert prime_numbers(low, high) == []
 
 
 # 2. Вызов с low>high
 def test_lower_limit_is_larger():
-    assert prime_numbers_internet(80, 5) == []
+    assert prime_numbers(80, 5) == []
 
 
 # 3. low и high не в диапазоне простых чисел. Low и high < 2
 def test_range_does_not_contain_numbers():
-    assert prime_numbers_internet(-5, 0) == []
+    assert prime_numbers(-5, 0) == []
 
 
 # (II) РЕЗУЛЬТАТ ОБРАБОТКИ
 # 1. Результат имеет тип данных list
 def test_result_is_list():
-    assert isinstance(prime_numbers_internet(2, 8), list)
+    assert isinstance(prime_numbers(2, 8), list)
 
 
 # 1. low не в диапазоне, high в диапазоне
 def test_lower_limit_not_in_range():
-    assert prime_numbers_internet(-50, 5) == [2, 3, 5]
+    assert prime_numbers(-50, 5) == [2, 3, 5]
 
 
 # 2. Проверка правильности определения от 2-5000
+def test_prime_numbers_2_to_5000():
+    assert prime_numbers(2, 5000) == prime_numbers_2_to_5000
+
+
+# 4. Проверка вывод одного элемента / границы равны
+def test_simple_output_1element():
+    assert prime_numbers(2, 2) == [2]
+
+
+# 5. Проверка на диапазон
+def test_range():
+    # a[8], a[50] -> (23, 233)
+    assert prime_numbers(23, 233) == prime_numbers_2_to_5000[8:51]
+
+
+# Список простых чисел для проверки
 prime_numbers_2_to_5000 = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89,
                            97, 101, 103, 107, 109, 113, 127, 131, 137, 139, 149, 151, 157, 163, 167, 173, 179, 181, 191,
                            193, 197, 199, 211, 223, 227, 229, 233, 239, 241, 251, 257, 263, 269, 271, 277, 281, 283,
@@ -77,18 +92,3 @@ prime_numbers_2_to_5000 = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 4
                            4703, 4721, 4723, 4729, 4733, 4751, 4759, 4783, 4787, 4789, 4793, 4799, 4801, 4813, 4817,
                            4831, 4861, 4871, 4877, 4889, 4903, 4909, 4919, 4931, 4933, 4937, 4943, 4951, 4957, 4967,
                            4969, 4973, 4987, 4993, 4999]
-
-
-def test_prime_numbers_2_to_5000():
-    assert prime_numbers_internet(2, 5000) == prime_numbers_2_to_5000
-
-
-# 4. Проверка вывод одного элемента / границы равны
-def test_simple_output_1element():
-    assert prime_numbers_internet(2, 2) == [2]
-
-
-# 5. Проверка на диапазон
-def test_range():
-    # a[8], a[50] -> (23, 233)
-    assert prime_numbers_internet(23, 233) == prime_numbers_2_to_5000[8:51]
